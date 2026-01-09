@@ -1,0 +1,36 @@
+<div class="card bg-base-100 w-1/2 mx-auto flex flex-col p-6 rounded-lg shadow-lg">
+  <div class="card-title justify-center text-3xl text-primary">Sign Up</div>
+  <div class="card-body w-full">
+    <form #registerForm="ngForm" class="flex flex-col gap-4 w-full">
+      <input
+        type="text"
+        name="email"
+        id="email"
+        placeholder="Email"
+        class="input w-full"
+        [(ngModel)]="creds.email"
+      />
+      <input
+        type="text"
+        name="displayName"
+        id="displayName"
+        placeholder="Display Name"
+        class="input w-full"
+        [(ngModel)]="creds.displayName"
+      />
+      <input
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        class="input w-full"
+        [(ngModel)]="creds.password"
+      />
+    </form>
+
+    <div class="flex items-center justify-end gap-3">
+      <button class="btn" (click)="cancel()">Cancel</button>
+      <button class="btn btn-primary" type="submit" (click)="register()">Register</button>
+    </div>
+  </div>
+</div>
