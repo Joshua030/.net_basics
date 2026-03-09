@@ -17,3 +17,10 @@ export interface Photo {
   publicId?: string;
   memberId: string;
 }
+
+export type EditableMember = {
+  displayName: string;
+  city: string;
+  country: string;
+  description?: string;
+};
