@@ -1,36 +1,68 @@
 <div class="card bg-base-100 w-1/2 mx-auto flex flex-col p-6 rounded-lg shadow-lg">
   <div class="card-title justify-center text-3xl text-primary">Sign Up</div>
   <div class="card-body w-full">
-    <form #registerForm="ngForm" class="flex flex-col gap-4 w-full">
-      <input
-        type="text"
-        name="email"
-        id="email"
-        placeholder="Email"
-        class="input w-full"
-        [(ngModel)]="creds.email"
-      />
-      <input
-        type="text"
-        name="displayName"
-        id="displayName"
-        placeholder="Display Name"
-        class="input w-full"
-        [(ngModel)]="creds.displayName"
-      />
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Password"
-        class="input w-full"
-        [(ngModel)]="creds.password"
-      />
+    <form [formGroup]="registerForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()">
+      <label for="email" class="floating-label">
+        <span>Email</span>
+        <input
+          type="text"
+          formControlName="email"
+          id="email"
+          placeholder="Email"
+          class="input w-full"
+        />
+      </label>
+      <label for="displayName" class="floating-label text-left">
+        <span>Display Name</span>
+        <input
+          type="text"
+          formControlName="displayName"
+          id="displayName"
+          placeholder="Display Name"
+          class="input w-full"
+          [class.input-error]="
+            registerForm.controls['displayName'].invalid &&
+            registerForm.controls['displayName'].touched
+          "
+        />
+        @if (
+          registerForm.controls['displayName'].invalid &&
+          registerForm.controls['displayName'].touched
+        ) {
+          <div class="validation-hint text-error text-xs">DisplayName is required</div>
+        }
+      </label>
+      <label for="password" class="floating-label">
+        <span>Password</span>
+        <input
+          type="password"
+          formControlName="password"
+          id="password"
+          placeholder="Password"
+          class="input w-full"
+        />
+      </label>
+      <label for="confirmPassword" class="floating-label">
+        <span>Confirm Password</span>
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          id="confirmPassword"
+          placeholder="Confirm Password"
+          class="input w-full"
+        />
+      </label>
     </form>
 
     <div class="flex items-center justify-end gap-3">
       <button class="btn" (click)="cancel()">Cancel</button>
-      <button class="btn btn-primary" type="submit" (click)="register()">Register</button>
+      <button class="btn btn-primary" [disabled]="!registerForm.valid" type="submit">
+        Register
+      </button>
     </div>
+  </div>
+  <div class="flex flex-col px-3 items-start w-full mockup-code text-lg">
+    <div>Form value: {{ registerForm.value | json }}</div>
+    <div>Form status: {{ registerForm.status | json }}</div>
   </div>
 </div>

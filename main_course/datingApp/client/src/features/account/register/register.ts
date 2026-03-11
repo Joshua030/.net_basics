@@ -1,37 +1,76 @@
-import { Component, inject, input, output } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, input, OnInit, output } from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { RegisterCreds, User } from '../../../types/user';
 import { AccountService } from '../../../core/services/account-service';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {
-  private accountService = inject(AccountService);
+export class Register implements OnInit {
   membersFromHome = input.required<User[]>();
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
+  protected registerForm: FormGroup = new FormGroup({});
 
-  register() {
-    this.accountService.register(this.creds).subscribe({
-      next: (user) => {
-        console.log('Registration successful', user);
-        this.cancel();
-      },
-      error: (error) => {
-        console.error('Registration failed', error);
-      },
-      complete: () => {
-        console.log('Registration request completed');
-      },
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+
+  initializeForm() {
+    this.registerForm = new FormGroup({
+      email: new FormControl('johndoe@test.com', [Validators.required, Validators.email]),
+      displayName: new FormControl('', Validators.required),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(8),
+      ]),
+      confirmPassword: new FormControl('', [Validators.required, this.matchValues('password')]),
+    });
+
+    this.registerForm.controls['password'].valueChanges.subscribe(() => {
+      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
 
+  matchValues(matchTo: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const parent = control.parent;
+      if (!parent) return null;
+
+      const matchValue = parent.get(matchTo)?.value;
+      return control.value === matchValue ? null : { passwordMismatch: true };
+    };
+  }
+
+  register() {
+    // this.accountService.register(this.creds).subscribe({
+    //   next: (user) => {
+    //     console.log('Registration successful', user);
+    //     this.cancel();
+    //   },
+    //   error: (error) => {
+    //     console.error('Registration failed', error);
+    //   },
+    //   complete: () => {
+    //     console.log('Registration request completed');
+    //   },
+    // });
+  }
+
   cancel() {
-    console.log('cancelled');
     this.cancelRegister.emit(false);
   }
 }
