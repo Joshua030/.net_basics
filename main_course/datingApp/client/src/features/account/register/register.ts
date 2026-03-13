@@ -1,6 +1,7 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, input, OnInit, output, signal } from '@angular/core';
 import {
   AbstractControl,
+  FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -9,39 +10,46 @@ import {
   Validators,
 } from '@angular/forms';
 import { RegisterCreds, User } from '../../../types/user';
-import { AccountService } from '../../../core/services/account-service';
 import { JsonPipe } from '@angular/common';
+import { TextInput } from '../../../shared/text-input/text-input';
+import { AccountService } from '../../../core/services/account-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, TextInput],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register implements OnInit {
+export class Register {
+  private accountService = inject(AccountService);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
   membersFromHome = input.required<User[]>();
   cancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
-  protected registerForm: FormGroup = new FormGroup({});
+  protected credentialsForm: FormGroup;
+  protected profileForm: FormGroup;
+  protected currentStep = signal(1);
+  protected validationErrors = signal<string[]>([]);
 
-  ngOnInit(): void {
-    this.initializeForm();
-  }
-
-  initializeForm() {
-    this.registerForm = new FormGroup({
-      email: new FormControl('johndoe@test.com', [Validators.required, Validators.email]),
-      displayName: new FormControl('', Validators.required),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(8),
-      ]),
-      confirmPassword: new FormControl('', [Validators.required, this.matchValues('password')]),
+  constructor() {
+    this.credentialsForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      displayName: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      confirmPassword: ['', [Validators.required, this.matchValues('password')]],
     });
 
-    this.registerForm.controls['password'].valueChanges.subscribe(() => {
-      this.registerForm.controls['confirmPassword'].updateValueAndValidity();
+    this.profileForm = this.fb.group({
+      gender: ['male', Validators.required],
+      dateOfBirth: ['', Validators.required],
+      city: ['', Validators.required],
+      country: ['', Validators.required],
+    });
+
+    this.credentialsForm.controls['password'].valueChanges.subscribe(() => {
+      this.credentialsForm.controls['confirmPassword'].updateValueAndValidity();
     });
   }
 
@@ -55,19 +63,39 @@ export class Register implements OnInit {
     };
   }
 
+  nextStep() {
+    if (this.credentialsForm.valid) {
+      this.currentStep.update((prevStep) => prevStep + 1);
+    }
+  }
+
+  prevStep() {
+    this.currentStep.update((prevStep) => prevStep - 1);
+  }
+
+  getMaxDate() {
+    const today = new Date();
+    today.setFullYear(today.getFullYear() - 18);
+    return today.toISOString().split('T')[0];
+  }
+
   register() {
-    // this.accountService.register(this.creds).subscribe({
-    //   next: (user) => {
-    //     console.log('Registration successful', user);
-    //     this.cancel();
-    //   },
-    //   error: (error) => {
-    //     console.error('Registration failed', error);
-    //   },
-    //   complete: () => {
-    //     console.log('Registration request completed');
-    //   },
-    // });
+    if (this.profileForm.valid && this.credentialsForm.valid) {
+      const formData = { ...this.credentialsForm.value, ...this.profileForm.value };
+      this.accountService.register(formData).subscribe({
+        next: (user) => {
+          console.log('Registration successful', user);
+          this.router.navigateByUrl('/members');
+        },
+        error: (error) => {
+          console.error('Registration failed', error);
+          this.validationErrors.set(error);
+        },
+        complete: () => {
+          console.log('Registration request completed');
+        },
+      });
+    }
   }
 
   cancel() {
