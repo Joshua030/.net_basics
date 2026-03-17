@@ -6,9 +6,8 @@ namespace API.Extensions;
 public static class ClaimsPrincipalExtensions
 {
 
-    public static string GetMemberId(this ClaimsPrincipal user)
+    public static string? GetMemberId(this ClaimsPrincipal user)
     {
-        return user.FindFirstValue(ClaimTypes.NameIdentifier)
-        ?? throw new InvalidOperationException("User ID not found in token.");
+        return user.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }
