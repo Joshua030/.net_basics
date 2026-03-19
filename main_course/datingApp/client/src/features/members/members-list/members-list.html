@@ -4,6 +4,9 @@
       <div class="flex gap-3">
         <button class="btn btn-primary" (click)="openModal()">Select Filters</button>
         <button class="btn btn-neutral" (click)="resetFilters()">Reset Filters</button>
+        <div class="text-lg bg-base-100 px-4 py-2 border rounded-lg text-primary capitalize">
+          {{ displayMessage }}
+        </div>
       </div>
       @if (paginatedResults.metadata; as metadata) {
         <app-paginator
