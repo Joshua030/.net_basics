@@ -34,8 +34,8 @@ public class MessageRepository(AppDbContext context) : IMessageRepository
 
         query = messageParams.Container switch
         {
-            "Outbox" => query.Where(m => m.SenderId == messageParams.MemberId),
-            _ => query.Where(m => m.RecipientId == messageParams.MemberId)
+            "Outbox" => query.Where(m => m.SenderId == messageParams.MemberId && m.SenderDeleted == false),
+            _ => query.Where(m => m.RecipientId == messageParams.MemberId && m.RecipientDeleted == false)
         };
 
         var messageQuery = query.Select(MessageExtensions.ToDtoProjection());
@@ -45,12 +45,12 @@ public class MessageRepository(AppDbContext context) : IMessageRepository
     public async Task<IReadOnlyList<MessageDto>> GetMessageThread(string currentMemberId, string recipientId)
     {
         await context.Messages
-        .Where(x => x.RecipientId == currentMemberId && x.SenderId == recipientId && x.DateRead == null)
+        .Where(x => x.RecipientId == currentMemberId && x.RecipientDeleted == false && x.SenderId == recipientId && x.DateRead == null)
 .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.DateRead, DateTime.UtcNow));
 
         return await context.Messages
         .Where(x => (x.RecipientId == currentMemberId && x.SenderId == recipientId)
-        || (x.SenderId == currentMemberId && x.SenderId == recipientId))
+        || (x.SenderId == currentMemberId && x.SenderDeleted == false && x.SenderId == recipientId))
         .OrderBy(x => x.MessageSent)
         .Select(MessageExtensions.ToDtoProjection())
         .ToListAsync();
