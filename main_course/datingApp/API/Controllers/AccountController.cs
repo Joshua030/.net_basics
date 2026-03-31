@@ -4,12 +4,13 @@ using API.DTOs;
 using API.Entities;
 using API.Extensions;
 using API.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController(AppDbContext context, ITokenService tokenService) : BaseApiController
+public class AccountController(UserManager<AppUser> userManager, ITokenService tokenService) : BaseApiController
 {
 
   [HttpPost("register")]
@@ -17,9 +18,9 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
   public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
   {
 
-    if (await UserExists(registerDto.Email)) return BadRequest("Email is already taken");
+    // if (await UserExists(registerDto.Email)) return BadRequest("Email is already taken");
 
-    using var hmac = new HMACSHA512();
+    // using var hmac = new HMACSHA512();
 
     // variables using query params
     /*    var user = new AppUser
@@ -34,8 +35,7 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
     {
       DisplayName = registerDto.DisplayName,
       Email = registerDto.Email.ToLower(),
-      PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),
-      PasswordSalt = hmac.Key,
+      UserName = registerDto.Email,
       Member = new Member
       {
         DisplayName = registerDto.DisplayName,
@@ -46,35 +46,55 @@ public class AccountController(AppDbContext context, ITokenService tokenService)
       }
     };
 
-    context.Users.Add(user);
-    await context.SaveChangesAsync();
-    return user.ToDto(tokenService);
+    /*   context.Users.Add(user);
+      await context.SaveChangesAsync(); */
+
+    var result = await userManager.CreateAsync(user, registerDto.Password);
+
+    if (!result.Succeeded)
+    {
+      foreach (var error in result.Errors)
+      {
+        ModelState.AddModelError("identity", error.Description);
+      }
+
+      return ValidationProblem();
+    }
+
+    return await user.ToDto(tokenService);
   }
 
   [HttpPost("login")]
 
   public async Task<ActionResult<UserDto>> Login(LoginDto loginDto) // we can use [FROMBODY] before LoginDto OR [FROMQUERY] to specify where to get the data
   {
-    var user = await context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == loginDto.Email.ToLower());
+    // var user = await context.Users.SingleOrDefaultAsync(u => u.Email.ToLower() == loginDto.Email.ToLower());
+    var user = await userManager.FindByEmailAsync(loginDto.Email);
 
     if (user == null) return Unauthorized("Invalid email");
 
-    using var hmac = new HMACSHA512(user.PasswordSalt);
+    //! Doing with own athentication system
+    /*  using var hmac = new HMACSHA512(user.PasswordSalt);
 
-    var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginDto.Password));
+     var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginDto.Password));
 
-    for (int i = 0; i < computedHash.Length; i++)
-    {
-      if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
-    }
+     for (int i = 0; i < computedHash.Length; i++)
+     {
+       if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
+     }
+  */
 
-    return user.ToDto(tokenService);
+    var result = await userManager.CheckPasswordAsync(user, loginDto.Password);
+
+    if (!result) return Unauthorized("Invalid password");
+
+    return await user.ToDto(tokenService);
 
   }
 
-  private async Task<bool> UserExists(string email)
-  {
-    return await context.Users.AnyAsync(u => u.Email.ToLower() == email.ToLower());
-  }
+  /*  private async Task<bool> UserExists(string email)
+   {
+     return await context.Users.AnyAsync(u => u.Email!.ToLower() == email.ToLower());
+   } */
 }
 
