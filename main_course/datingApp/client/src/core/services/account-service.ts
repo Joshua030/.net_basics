@@ -37,6 +37,7 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    user.roles = this.getRolesFromtoken(user);
     localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
     this.likeService.getLikeIds();
@@ -47,5 +48,12 @@ export class AccountService {
     localStorage.removeItem('filters');
     this.likeService.clearLikeIds();
     this.currentUser.set(null);
+  }
+
+  private getRolesFromtoken(user: User): string[] {
+    const payload = user.token.split('.')[1];
+    const decoded = atob(payload);
+    const jsonPayload = JSON.parse(decoded);
+    return Array.isArray(jsonPayload.role) ? jsonPayload.role : [jsonPayload.role];
   }
 }

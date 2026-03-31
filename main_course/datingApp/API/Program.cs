@@ -53,6 +53,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     };
 });
 
+builder.Services.AddAuthorizationBuilder()
+.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
+.AddPolicy("ModeartePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

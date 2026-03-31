@@ -33,6 +33,10 @@
         "@schematics/angular:pipe": {
           "skipTests": true,
           "path": "src/core/pipes"
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true,
+          "path": "src/core/directives"
         }
       },
       "root": "",
@@ -50,9 +54,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
