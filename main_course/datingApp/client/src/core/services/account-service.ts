@@ -16,35 +16,65 @@ export class AccountService {
   private baseUrl = environment.apiUrl;
 
   register(creds: RegisterCreds) {
-    return this.http.post<User>(this.baseUrl + 'account/register', creds).pipe(
-      tap((user) => {
-        if (user) {
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUser.set(user);
-        }
-      }),
-    );
+    return this.http
+      .post<User>(this.baseUrl + 'account/register', creds, { withCredentials: true })
+      .pipe(
+        tap((user) => {
+          if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+            this.currentUser.set(user);
+          }
+        }),
+      );
   }
 
   login(creds: LoginCreds) {
-    return this.http.post<User>(this.baseUrl + 'account/login', creds).pipe(
-      tap((user) => {
-        if (user) {
-          this.setCurrentUser(user);
-        }
-      }),
-    );
+    return this.http
+      .post<User>(this.baseUrl + 'account/login', creds, { withCredentials: true })
+      .pipe(
+        tap((user) => {
+          if (user) {
+            this.setCurrentUser(user);
+            this.startTokenRefreshInterval();
+          }
+        }),
+      );
   }
 
   setCurrentUser(user: User) {
     user.roles = this.getRolesFromtoken(user);
-    localStorage.setItem('user', JSON.stringify(user));
+    // localStorage.setItem('user', JSON.stringify(user));
     this.currentUser.set(user);
     this.likeService.getLikeIds();
   }
 
+  refreshToken() {
+    return this.http.post<User>(
+      this.baseUrl + 'account/refresh-token',
+      {},
+      { withCredentials: true },
+    );
+  }
+
+  startTokenRefreshInterval() {
+    setInterval(() => {
+      this.http
+        .post<User>(this.baseUrl + 'account/refresh-token', {}, { withCredentials: true })
+        .subscribe({
+          next: (user) => {
+            console.log('Token refreshed', user);
+            if (user) this.setCurrentUser(user);
+            else this.logout();
+          },
+          error: () => {
+            this.logout();
+          },
+        });
+    }, 10 * 1000);
+  }
+
   logout() {
-    localStorage.removeItem('user');
+    // localStorage.removeItem('user');
     localStorage.removeItem('filters');
     this.likeService.clearLikeIds();
     this.currentUser.set(null);

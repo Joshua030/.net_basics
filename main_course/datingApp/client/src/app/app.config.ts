@@ -24,7 +24,7 @@ export const appConfig: ApplicationConfig = {
       return new Promise<void>(async (resolve, reject) => {
         setTimeout(async () => {
           try {
-            return await lastValueFrom(initService.init());
+            await lastValueFrom(initService.init());
           } catch (error) {
             console.error('App initialization failed', error);
             throw error;
