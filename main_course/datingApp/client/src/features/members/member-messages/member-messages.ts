@@ -5,6 +5,8 @@ import { Message } from '../../../types/message';
 import { DatePipe } from '@angular/common';
 import { TimeAgoPipe } from '../../../core/pipes/time-ago-pipe';
 import { FormsModule } from '@angular/forms';
+import { PresenceService } from '../../../core/services/presence-service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-member-messages',
@@ -14,13 +16,22 @@ import { FormsModule } from '@angular/forms';
 })
 export class MemberMessages implements OnInit {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
-  private messageService = inject(MessageService);
+  protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
+  protected presenceService = inject(PresenceService);
+  private route = inject(ActivatedRoute);
   protected messages = signal<Message[]>([]);
   protected messageContent = '';
 
   ngOnInit(): void {
-    this.loadMessages();
+    // this.loadMessages();
+    this.route.parent?.paramMap.subscribe({
+      next: (params) => {
+        const otherUserId = params.get('id');
+        if (!otherUserId) throw new Error('Cannot connect to hub');
+        this.messageService.createHubConnection(otherUserId);
+      },
+    });
   }
 
   constructor() {
@@ -55,10 +66,13 @@ export class MemberMessages implements OnInit {
   sendMessage() {
     const recipientId = this.memberService.member()?.id;
     if (!recipientId) return;
-    this.messageService.sendMessage(recipientId, this.messageContent).subscribe({
+
+    const content = this.messageContent;
+    this.messageContent = ''; // ✅ clear before the async call
+
+    this.messageService.sendMessage(recipientId, content).subscribe({
       next: (message) => {
         this.messages.update((messages) => [...messages, message]);
-        this.messageContent = '';
       },
     });
   }
