@@ -21,6 +21,7 @@ export class Nav implements OnInit {
   protected themes = themes;
   private router = inject(Router);
   private toastService = inject(ToastService);
+  protected loading = signal(false);
 
   handleSelectTheme(theme: string) {
     console.log('Selected theme:', theme);
@@ -35,8 +36,13 @@ export class Nav implements OnInit {
     document.documentElement.setAttribute('data-theme', this.selectedTheme());
   }
 
+  handleSelectUserItem() {
+    const elem = document.activeElement as HTMLElement;
+    if (elem) elem.blur();
+  }
+
   login() {
-    console.log('Attempting login with credentials:', this.creds);
+    this.loading.set(true);
     this.accountService.login(this.creds).subscribe({
       next: (response) => {
         console.log('Login successful', response);
@@ -48,6 +54,7 @@ export class Nav implements OnInit {
         this.toastService.error(error.error);
         console.error('Login failed', error);
       },
+      complete: () => this.loading.set(false),
     });
   }
 

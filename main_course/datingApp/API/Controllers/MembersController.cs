@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
 
-    public class MembersController(IMemberRepository memberRepository, IPhotoService photoService) : BaseApiController
+    public class MembersController(IUnitOfWork unitOfWork, IPhotoService photoService) : BaseApiController
     {
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<Member>>> GetMembers([FromQuery] MemberParams membersParams)
         {
             membersParams.CurrentMemberId = User.GetMemberId();
             Console.WriteLine($"memberId: {membersParams.CurrentMemberId}");
-            var members = await memberRepository.GetMembersAsync(membersParams);
+            var members = await unitOfWork.MemberRepository.GetMembersAsync(membersParams);
 
             return Ok(members);
         }
@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpGet("{id}")] // localhost:5001/api/members/:id
         public async Task<ActionResult<Member>> GetMember(string id)
         {
-            var member = await memberRepository.GetMemberByIdAsync(id);
+            var member = await unitOfWork.MemberRepository.GetMemberByIdAsync(id);
             if (member == null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("{id}/photos")]
         public async Task<ActionResult<IReadOnlyList<Photo>>> GetMemberPhotos(string id)
         {
-            var photos = await memberRepository.GetPhotosForMemberAsync(id);
+            var photos = await unitOfWork.MemberRepository.GetPhotosForMemberAsync(id);
             return Ok(photos);
         }
 
@@ -46,7 +46,7 @@ namespace API.Controllers
             var memberId = User.GetMemberId();
             if (memberId == null) return BadRequest("User ID not found in token.");
 
-            var member = await memberRepository.GetMemberForUpdate(memberId);
+            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(memberId);
             if (member == null) return NotFound("Member not found.");
 
             member.DisplayName = memberUpdateDto.DisplayName ?? member.DisplayName;
@@ -56,8 +56,8 @@ namespace API.Controllers
 
             member.AppUser.DisplayName = memberUpdateDto.DisplayName ?? member.AppUser.DisplayName;
 
-            memberRepository.Update(member); // Mark the entity as modified
-            if (await memberRepository.SaveAllAsync()) return NoContent();
+            unitOfWork.MemberRepository.Update(member); // Mark the entity as modified
+            if (await unitOfWork.Complete()) return NoContent();
 
             return BadRequest("Failed to update member.");
         }
@@ -65,7 +65,7 @@ namespace API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<Photo>> AddPhoto([FromForm] IFormFile file)
         {
-            var member = await memberRepository.GetMemberForUpdate(User.GetMemberId());
+            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(User.GetMemberId());
 
             if (member == null) return BadRequest("Cannot update member");
 
@@ -88,7 +88,7 @@ namespace API.Controllers
 
             member.Photos.Add(photo);
 
-            if (await memberRepository.SaveAllAsync()) return photo;
+            if (await unitOfWork.Complete()) return photo;
 
             return BadRequest("Problem adding photo");
         }
@@ -96,7 +96,7 @@ namespace API.Controllers
         [HttpPut("set-main-photo/{photoId}")]
         public async Task<ActionResult> SetMainPhoto(int photoId)
         {
-            var member = await memberRepository.GetMemberForUpdate(User.GetMemberId());
+            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(User.GetMemberId());
 
             if (member == null) return BadRequest("Cannot get member from token");
 
@@ -110,7 +110,7 @@ namespace API.Controllers
             member.ImageUrl = photo.Url;
             member.AppUser.ImageUrl = photo.Url;
 
-            if (await memberRepository.SaveAllAsync()) return NoContent();
+            if (await unitOfWork.Complete()) return NoContent();
 
             return BadRequest("Problem setting main photo");
         }
@@ -118,7 +118,7 @@ namespace API.Controllers
         [HttpDelete("delete-photo/{photoId}")]
         public async Task<ActionResult> DeletePhoto(int photoId)
         {
-            var member = await memberRepository.GetMemberForUpdate(User.GetMemberId());
+            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(User.GetMemberId());
             if (member == null) return BadRequest("Cannot get member from token");
             var photo = member.Photos.SingleOrDefault(x => x.Id == photoId);
 
@@ -134,7 +134,7 @@ namespace API.Controllers
             }
 
             member.Photos.Remove(photo);
-            if (await memberRepository.SaveAllAsync()) return Ok();
+            if (await unitOfWork.Complete()) return Ok();
 
             return BadRequest("Problem deleting the photo");
         }

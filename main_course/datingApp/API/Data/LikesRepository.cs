@@ -57,10 +57,10 @@ public class LikesRepository(AppDbContext context) : ILikesRepository
     //     }
     // }
 
-    public async Task<bool> SaveAllChanges()
-    {
-        return await context.SaveChangesAsync() > 0;
-    }
+    // public async Task<bool> SaveAllChanges()
+    // {
+    //     return await context.SaveChangesAsync() > 0;
+    // }
 
     public async Task<PaginatedResult<Member>> GetMemberLikes(LikesParams likesParams)
     {
