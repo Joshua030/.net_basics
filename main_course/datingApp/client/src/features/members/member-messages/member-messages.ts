@@ -1,4 +1,13 @@
-import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { MessageService } from '../../../core/services/message-service';
 import { MemberService } from '../../../core/services/member-service';
 import { Message } from '../../../types/message';
@@ -14,13 +23,13 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './member-messages.html',
   styleUrl: './member-messages.css',
 })
-export class MemberMessages implements OnInit {
+export class MemberMessages implements OnInit, OnDestroy {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
   protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
   protected presenceService = inject(PresenceService);
   private route = inject(ActivatedRoute);
-  protected messages = signal<Message[]>([]);
+  // protected messages = signal<Message[]>([]);
   protected messageContent = '';
 
   ngOnInit(): void {
@@ -36,7 +45,8 @@ export class MemberMessages implements OnInit {
 
   constructor() {
     effect(() => {
-      const currentMessages = this.messages();
+      // const currentMessages = this.messages();
+      const currentMessages = this.messageService.messageThread();
 
       if (currentMessages.length > 0) {
         this.scrollToBottom();
@@ -44,7 +54,11 @@ export class MemberMessages implements OnInit {
     });
   }
 
-  loadMessages() {
+  ngOnDestroy(): void {
+    this.messageService.stopHubConnection();
+  }
+
+  /*  loadMessages() {
     const memberId = this.memberService.member()?.id;
 
     if (memberId) {
@@ -61,7 +75,7 @@ export class MemberMessages implements OnInit {
         complete: () => this.scrollToBottom(),
       });
     }
-  }
+  } */
 
   sendMessage() {
     const recipientId = this.memberService.member()?.id;
@@ -70,10 +84,14 @@ export class MemberMessages implements OnInit {
     const content = this.messageContent;
     this.messageContent = ''; // ✅ clear before the async call
 
-    this.messageService.sendMessage(recipientId, content).subscribe({
+    /*  this.messageService.sendMessage(recipientId, content).subscribe({
       next: (message) => {
         this.messages.update((messages) => [...messages, message]);
       },
+    }); */
+
+    this.messageService.sendMessage(recipientId, content)?.then(() => {
+      this.messageContent = '';
     });
   }
 
