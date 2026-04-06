@@ -24,7 +24,7 @@ jobs:
 
       - name: Install Angular CLI
         run: npm install -g @angular/cli
-        workin-directory: main_course/datingApp/client
+        working-directory: main_course/datingApp/client
 
       - name: Install dependencies and build anular app
         run: |
