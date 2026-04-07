@@ -4,7 +4,13 @@ import { inject } from '@angular/core';
 import { delay, finalize, identity, of, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-const cache = new Map<string, HttpEvent<unknown>>();
+type CacheEntry = {
+  timestamp: number;
+  response: HttpEvent<unknown>;
+};
+
+const cache = new Map<string, CacheEntry>();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   const busyService = inject(BusyService);
@@ -21,7 +27,6 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     for (const key of cache.keys()) {
       if (key.includes(urlPattern)) {
         cache.delete(key);
-        console.log(`Cache invalidated for: ${key}`);
       }
     }
   };
@@ -43,7 +48,12 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.method === 'GET') {
     const cachedResponse = cache.get(cachekey);
     if (cachedResponse) {
-      return of(cachedResponse);
+      const isExpired = Date.now() - cachedResponse.timestamp > CACHE_DURATION;
+      if (!isExpired) {
+        return of(cachedResponse.response);
+      } else {
+        cache.delete(cachekey);
+      }
     }
   }
 
@@ -52,7 +62,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
     environment.production ? identity : delay(500),
     tap((event) => {
       if (req.method === 'GET') {
-        cache.set(cachekey, event);
+        cache.set(cachekey, { timestamp: Date.now(), response: event });
       }
     }),
     finalize(() => busyService.idle()),
