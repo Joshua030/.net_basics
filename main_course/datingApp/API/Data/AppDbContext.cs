@@ -53,6 +53,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     .HasForeignKey(s => s.TargetMemberId)
     .OnDelete(DeleteBehavior.NoAction);
 
+    modelBuilder.Entity<Photo>()
+    .HasQueryFilter(p => p.IsApproved);
+
     var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
       v => v.ToUniversalTime(),
       v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
