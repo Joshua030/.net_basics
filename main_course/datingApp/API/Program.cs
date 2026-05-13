@@ -19,8 +19,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    // options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }
+    else
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    }
 });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 // builder.Services.AddOpenApi();
@@ -77,7 +83,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorizationBuilder()
 .AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"))
-.AddPolicy("ModeartePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
 
 var app = builder.Build();
 
@@ -115,7 +121,14 @@ try
 {
     var context = services.GetRequiredService<AppDbContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
-    await context.Database.MigrateAsync();
+    if (app.Environment.IsDevelopment())
+    {
+        await context.Database.EnsureCreatedAsync();
+    }
+    else
+    {
+        await context.Database.MigrateAsync();
+    }
     await context.Connections.ExecuteDeleteAsync();
     await Seed.SeedUsers(userManager);
 }

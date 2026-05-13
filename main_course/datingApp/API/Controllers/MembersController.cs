@@ -36,7 +36,9 @@ namespace API.Controllers
         [HttpGet("{id}/photos")]
         public async Task<ActionResult<IReadOnlyList<Photo>>> GetMemberPhotos(string id)
         {
-            var photos = await unitOfWork.MemberRepository.GetPhotosForMemberAsync(id);
+            var currentMember = User.GetMemberId()
+        ?? throw new UnauthorizedAccessException("Invalid user token");
+            var photos = await unitOfWork.MemberRepository.GetPhotosForMemberAsync(id, currentMember);
             return Ok(photos);
         }
 
@@ -65,32 +67,23 @@ namespace API.Controllers
         [HttpPost("add-photo")]
         public async Task<ActionResult<Photo>> AddPhoto([FromForm] IFormFile file)
         {
-            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(User.GetMemberId());
-
-            if (member == null) return BadRequest("Cannot update member");
-
+            var memberId = User.GetMemberId() ?? throw new UnauthorizedAccessException("Bad Id");
+            var member = await unitOfWork.MemberRepository.GetMemberForUpdate(memberId);
+            if (member == null) return BadRequest("Cannot update user");
             var result = await photoService.UploadPhotoAsync(file);
-
             if (result.Error != null) return BadRequest(result.Error.Message);
-
             var photo = new Photo
             {
                 Url = result.SecureUrl.AbsoluteUri,
                 PublicId = result.PublicId,
-                MemberId = User.GetMemberId()
+                MemberId = memberId
             };
 
-            if (member.ImageUrl == null)
-            {
-                member.ImageUrl = photo.Url;
-                member.AppUser.ImageUrl = photo.Url;
-            }
-
             member.Photos.Add(photo);
-
             if (await unitOfWork.Complete()) return photo;
 
             return BadRequest("Problem adding photo");
+
         }
 
         [HttpPut("set-main-photo/{photoId}")]

@@ -1,0 +1,108 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+name: Build and deploy ASP.Net Core app to Azure Web App - test-dn-app
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+        working-directory: main_course/datingApp/client
+
+      - name: Install dependencies and build Angular app
+        run: |
+          npm install
+          ng build
+        working-directory: main_course/datingApp/client
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.x"
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+        working-directory: main_course/datingApp/API
+
+      - name: Generate SQL migration script
+        run: dotnet ef migrations script --idempotent --output ${{env.DOTNET_ROOT}}/sql/migrate.sql --project API
+        working-directory: main_course/datingApp
+        env:
+          ASPNETCORE_ENVIRONMENT: Production
+          ConnectionStrings__DefaultConnection: "Server=placeholder;Database=placeholder;"
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        working-directory: main_course/datingApp/API
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload SQL migration script
+        uses: actions/upload-artifact@v4
+        with:
+          name: sql-migration
+          path: ${{env.DOTNET_ROOT}}/sql/migrate.sql
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Download SQL migration script
+        uses: actions/download-artifact@v4
+        with:
+          name: sql-migration
+          path: sql
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B3724DCFEC744860B4A60D5A932AB9F2 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_721D819858C44C42B7A51005AD8A26FC }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_301CA70D48104FF690A37335D11D5753 }}
+
+      - name: Apply migrations to Azure SQL
+        uses: azure/sql-action@v2.3
+        with:
+          connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+          path: sql/migrate.sql
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "test-dn-app"
+          slot-name: "Production"
+          package: .

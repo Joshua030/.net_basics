@@ -8,6 +8,8 @@ public class Photo
   public required string Url { get; set; }
   public string? PublicId { get; set; }
 
+  public bool IsApproved { get; set; } = false;
+
   // Navigation properties
   public Member Member { get; set; } = null!;
 
