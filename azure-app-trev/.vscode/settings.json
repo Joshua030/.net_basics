@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin/Release/net10.0/publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/49093de1-5505-42f6-bec0-6051cb01cc3c/resourceGroups/az-course-rg-eur/providers/Microsoft.Web/sites/test-deploy-ui-tools"
+}
