@@ -6,6 +6,12 @@
 # dotenv files
 .env
 
+# Deployment archives
+*.zip
+
+# Angular cache (for ASP.NET + Angular projects)
+.angular/
+
 # User-specific files
 *.rsuser
 *.suo
