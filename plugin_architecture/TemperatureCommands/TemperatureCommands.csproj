@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <!-- Required for assemblies meant to be loaded dynamically as plugins:
+         it emits a .deps.json describing the plugin's own dependencies. -->
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reference the contract but do NOT copy PlugInBase.dll into this plugin's
+         output (ExcludeAssets=runtime). The single copy in the host's output is the
+         one that gets loaded, so ICommand is the same type on both sides. -->
+    <ProjectReference Include="..\PlugInBase\PlugInBase.csproj">
+      <Private>false</Private>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+  <!-- Deploy this plugin into the host's plugins\<PluginName>\ folder. Keeping each
+       plugin in its OWN directory (with no PlugInBase.dll beside it) is what lets the
+       host share the single PlugInBase/ICommand type across the load-context boundary. -->
+  <Target Name="CopyToHostPlugins" AfterTargets="Build">
+    <ItemGroup>
+      <PluginOutput Include="$(OutputPath)**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginOutput)"
+          DestinationFiles="@(PluginOutput->'$(MSBuildThisFileDirectory)..\WeatherAppHost\bin\$(Configuration)\$(TargetFramework)\plugins\$(MSBuildProjectName)\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

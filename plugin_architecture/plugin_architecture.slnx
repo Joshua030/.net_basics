@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PlugInBase/PlugInBase.csproj" />
+  <Project Path="TemperatureCommands/TemperatureCommands.csproj" />
+  <Project Path="WeatherAppHost/WeatherAppHost.csproj" />
+</Solution>

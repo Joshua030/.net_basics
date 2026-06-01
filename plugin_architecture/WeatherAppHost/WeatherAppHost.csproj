@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The shared contract. The HOST keeps a normal (copy-local) reference so that
+         the single PlugInBase.dll lives in the host's output. Plugins, by contrast,
+         exclude it at runtime so they reuse THIS copy — giving one shared ICommand type. -->
+    <ProjectReference Include="..\PlugInBase\PlugInBase.csproj" />
+
+    <!-- Reference the plugin ONLY to force build order (plugin builds before the host)
+         and stays decoupled: ReferenceOutputAssembly=false means the host has no
+         compile-time dependency on the plugin. The plugin deploys its own files into
+         this host's plugins\ folder via its CopyToHostPlugins target. -->
+    <ProjectReference Include="..\TemperatureCommands\TemperatureCommands.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>
