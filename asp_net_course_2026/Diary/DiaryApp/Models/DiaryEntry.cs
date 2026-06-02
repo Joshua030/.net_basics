@@ -14,8 +14,8 @@ public class DiaryEntry
     /*    public required string? Title { get; set; }
        public required string? Title { get; set; } = ""; */
 
-
-    public string? Content { get; set; }
+    [Required]
+    public required string Content { get; set; }
     [Required]
     public DateTime Created { get; set; } = DateTime.Now;
 }
