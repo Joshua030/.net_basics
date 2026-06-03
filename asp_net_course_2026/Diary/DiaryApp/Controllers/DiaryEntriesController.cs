@@ -9,14 +9,34 @@ namespace DiaryApp.Controllers
 
         private readonly AppDbContext _context;
 
-        public DiaryEntriesController( AppDbContext context)
+        public DiaryEntriesController(AppDbContext context)
         {
             _context = context;
         }
         public IActionResult Index()
         {
-            List<DiaryEntry> diaryEntries = _context.DiaryEntries.ToList() ?? [];    
+            List<DiaryEntry> diaryEntries = _context.DiaryEntries.ToList() ?? [];
             return View(diaryEntries);
+        }
+
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(DiaryEntry diaryEntry)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(diaryEntry);
+            }
+
+            _context.DiaryEntries.Add(diaryEntry);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "DiaryEntries");
         }
     }
 }
