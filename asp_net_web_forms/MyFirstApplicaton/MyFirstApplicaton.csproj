@@ -68,6 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Default2.aspx" />
+    <Content Include="Default3.aspx" />
+    <Content Include="Default4.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +80,27 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default2.aspx.cs">
+      <DependentUpon>Default2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default2.aspx.designer.cs">
+      <DependentUpon>Default2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default3.aspx.cs">
+      <DependentUpon>Default3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default3.aspx.designer.cs">
+      <DependentUpon>Default3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default4.aspx.cs">
+      <DependentUpon>Default4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default4.aspx.designer.cs">
+      <DependentUpon>Default4.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

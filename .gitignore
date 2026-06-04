@@ -6,6 +6,9 @@
 # dotenv files
 .env
 
+# Playwright MCP artifacts (console logs, page snapshots)
+.playwright-mcp/
+
 # Deployment archives
 *.zip
 
