@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using MyFirstApplicaton.App_Code;
 
 namespace MyFirstApplicaton
 {
@@ -11,6 +12,7 @@ namespace MyFirstApplicaton
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Response.Write(Class1.SayHello());
             TextBox1.Text = "Load";
         }
 
