@@ -20,5 +20,18 @@ namespace MyFirstApplicaton
         {
             TextBox1.Text = "Demo";
         }
+
+        protected void BtnRedirect_Click(object sender, EventArgs e)
+        {
+            // Redirect with a event
+            Response.Redirect("Default2.aspx");
+        }
+
+        protected void BtnTransfer_Click(object sender, EventArgs e)
+        {
+            // Transfer with a event
+            // Code is executed twice in the case of transfer, once for the source page and once for the destination page (Refresh).
+            Server.Transfer("Default2.aspx");
+        }
     }
 }
