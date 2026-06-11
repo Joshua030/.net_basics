@@ -38,15 +38,17 @@
                         <table class="auto-style3">
                             <tr>
                                 <td class="auto-style4" style="text-align: center; vertical-align: top; background-color: #66CCFF; font-weight: bold; display: flex; flex-direction:column; gap:5px;">Courses Offered<br />
-                                   <a href="CSharp.aspx">CSharp.aspx</a>
-                                    <a href="ASPNET.aspx">ASPNET.aspx</a>
-                                    <a href="SQLServer.aspx">SQLServer.aspx</a><br />
+                                   <a href="<%=Page.ResolveUrl("~/CSharp.aspx") %>">CSharp.aspx</a>
+                                    <a href="<%=Page.ResolveUrl("~/ASPNET.aspx") %>">ASPNET.aspx</a>
+                                    <a href="<%=Page.ResolveUrl("~/SQLServer.aspx") %>">SQLServer.aspx</a><br />
                                     <br />
                                    <strong>Bash starting Date</strong> 
                                     <asp:ContentPlaceHolder ID="CphStartDate" runat="server">
                                         No Scheduled Date
                                     </asp:ContentPlaceHolder>
-                                </td>
+                                    <br />
+                                    <br />
+                                    <a href="<%=Page.ResolveUrl("~/Admin/ManageCourses.aspx") %>">ManageCourses.aspx</a></td>
                                 <td style="vertical-align: top">
                                     <asp:ContentPlaceHolder ID="CpdCourseDetails" runat="server">
                                         Page under Construction
