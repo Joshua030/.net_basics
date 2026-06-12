@@ -13,7 +13,7 @@
     <p>
   15th March
     </p>
-  <asp:Button ID="BtnDemo" runat="server" OnClick="BtnDemo_Click" Text="Demo" />
+  <asp:Button ID="BtnDemo" runat="server" OnClick="BtnDemo_Click" Text="Demo" ClientIDMode="AutoID" />
     </asp:content>
 <asp:Content ID="Content1" runat="server" contentplaceholderid="head">
     <style type="text/css">
