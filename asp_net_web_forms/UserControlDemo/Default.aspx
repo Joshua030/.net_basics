@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">S
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
 </head>
@@ -12,7 +12,7 @@
     <form id="form1" runat="server">
         <div>
             <h1>Welcome to my website</h1>
-            <uc1:LoginUserControl ID="LoginUserControl1" runat="server" ReturnUrl="~/WelcomeAuthenticatedUser.aspx" />
+            <uc1:LoginUserControl ID="LoginUserControl1" runat="server" UsernameLabel="LoginId" PasswordLabel="thePassword" InvalidUserMessage="Username and Pasword are not valid" OnAuthenticated="UcLoginAuthenticated" />
         </div>
     </form>
 </body>

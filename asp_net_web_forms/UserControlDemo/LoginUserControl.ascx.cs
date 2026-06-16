@@ -9,10 +9,36 @@ namespace UserControlDemo
 {
     public partial class LoginUserControl : System.Web.UI.UserControl
     {
+        // prop with default event handler
+        //public event EventHandler Authenticated;
 
+        public event AuthenticatedHandler Authenticated;
         public bool IsAuthenticated { get; set; }
         public string ReturnUrl { get; set; }
         public string InvalidUserMessage { get; set; }
+
+        public string UsernameLabel {
+
+            get {
+                return LtrUsername.Text;
+            }
+            set { 
+              LtrUsername.Text = value;
+            } 
+        }
+
+        public string PasswordLabel
+        {
+            get
+            {
+                return LtrPassword.Text;
+            }
+            set
+            {
+                LtrPassword.Text = value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -36,7 +62,23 @@ namespace UserControlDemo
                 LblMessage.Text = "Invalid username or password.";
             }
 
-            if (IsAuthenticated)
+            // Raise the Authenticated event
+            if (IsAuthenticated) {
+                if (Authenticated != null)
+            {
+                    AuthenticatedEventArgs args = new AuthenticatedEventArgs()
+                    {
+                        AuthenticatedUserName = username
+                    };
+                    Authenticated(this, args);
+            }
+            }
+
+
+
+            // Check if the user is authenticated and redirect accordingly
+
+            /* if (IsAuthenticated)
             {
                 if (String.IsNullOrEmpty(ReturnUrl))
                 {
@@ -48,19 +90,27 @@ namespace UserControlDemo
                     Response.Redirect(ReturnUrl);
                 }
             }
+            */
 
             if (!IsAuthenticated)
             {
                 if (String.IsNullOrEmpty(InvalidUserMessage))
                 {
-                    LblErrorText = "Invalid username or password.";
+                    LblErrorText.Text = "Invalid username or password.";
 
                 }
                 else
                 {
-                    LblErrorText = InvalidUserMessage;
+                    LblErrorText.Text = InvalidUserMessage;
                 }
             }
         }
+    }
+
+    public delegate void AuthenticatedHandler(object sender, AuthenticatedEventArgs e);
+
+    public class AuthenticatedEventArgs : EventArgs
+    {
+        public string AuthenticatedUserName { get; set; }
     }
 }

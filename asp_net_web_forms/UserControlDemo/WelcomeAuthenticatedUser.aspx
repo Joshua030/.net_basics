@@ -11,6 +11,7 @@
         <div>
             <h1>Welcome,
                 <asp:Label ID="LblUsername" runat="server"></asp:Label>!</h1>
+         <p><%=Request.QueryString["username"] %></p>
         </div>
     </form>
 </body>

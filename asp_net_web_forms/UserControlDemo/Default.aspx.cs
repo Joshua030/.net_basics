@@ -13,5 +13,11 @@ namespace UserControlDemo
         {
 
         }
+
+        protected void UcLoginAuthenticated(object sender, AuthenticatedEventArgs e)
+        {
+            string username = e.AuthenticatedUserName;
+            Response.Redirect("WelcomeAuthenticatedUser.aspx?username=" + username);
+        }
     }
 }
