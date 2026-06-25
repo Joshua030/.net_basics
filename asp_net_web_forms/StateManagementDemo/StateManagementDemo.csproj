@@ -67,22 +67,57 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CookieDictionary.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="Home.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="LoginSession.aspx" />
     <Content Include="Page1.aspx" />
     <Content Include="Page2.aspx" />
     <Content Include="Page3.aspx" />
     <Content Include="ProgrammingCookies.aspx" />
     <Content Include="QueryTest.aspx" />
+    <Content Include="secure\Secure1.aspx" />
+    <Content Include="secure\Secure2.aspx" />
+    <Content Include="SessionManage.aspx" />
     <Content Include="Web.config" />
     <Content Include="WebForm1.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CookieDictionary.aspx.cs">
+      <DependentUpon>CookieDictionary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CookieDictionary.aspx.designer.cs">
+      <DependentUpon>CookieDictionary.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginSession.aspx.cs">
+      <DependentUpon>LoginSession.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginSession.aspx.designer.cs">
+      <DependentUpon>LoginSession.aspx</DependentUpon>
     </Compile>
     <Compile Include="Page1.aspx.cs">
       <DependentUpon>Page1.aspx</DependentUpon>
@@ -119,6 +154,27 @@
     </Compile>
     <Compile Include="QueryTest.aspx.designer.cs">
       <DependentUpon>QueryTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="secure\Secure1.aspx.cs">
+      <DependentUpon>Secure1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="secure\Secure1.aspx.designer.cs">
+      <DependentUpon>Secure1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="secure\Secure2.aspx.cs">
+      <DependentUpon>Secure2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="secure\Secure2.aspx.designer.cs">
+      <DependentUpon>Secure2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionManage.aspx.cs">
+      <DependentUpon>SessionManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SessionManage.aspx.designer.cs">
+      <DependentUpon>SessionManage.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebForm1.aspx.cs">
       <DependentUpon>WebForm1.aspx</DependentUpon>
