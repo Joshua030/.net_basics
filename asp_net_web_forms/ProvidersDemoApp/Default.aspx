@@ -11,6 +11,8 @@
         <div>
             <a href="Secured/Page1.aspx">Secured/Page1.aspx</a><br />
             <a href="Secured/Page2.aspx">Secured/Page2.aspx</a><br />
+            <a href="Secured/ViewMyProfile.aspx">Secured/ViewMyProfile.aspx</a>
+            <a href="Secured/EditMyProfile.aspx">Secured/EditMyProfile.aspx</a>
             <br />
             <asp:LoginView ID="LoginView1" runat="server">
                 <AnonymousTemplate>
@@ -26,8 +28,11 @@
 
             <asp:Panel ID="RolesPanel" runat="server" Visible="false">
                 <hr />
-                <h3>Roles for <asp:Literal ID="LitUser" runat="server" /></h3>
-                Current roles: <asp:Literal ID="LitRoles" runat="server" /><br /><br />
+                <h3>Roles for
+                    <asp:Literal ID="LitUser" runat="server" /></h3>
+                Current roles:
+                <asp:Literal ID="LitRoles" runat="server" /><br />
+                <br />
                 <asp:DropDownList ID="DdlRoles" runat="server">
                     <asp:ListItem>r1</asp:ListItem>
                     <asp:ListItem>r2</asp:ListItem>
@@ -37,6 +42,12 @@
                 <asp:Button ID="BtnRemove" runat="server" Text="Remove me from role" OnClick="BtnRemove_Click" />
             </asp:Panel>
         </div>
+        <asp:Button ID="BtnCreateUser" runat="server" OnClick="BtnCreateUser_Click" Text="Create User" />
+        <p>
+            <asp:TextBox ID="TxtRole" runat="server"></asp:TextBox>
+            <asp:Button ID="BtnCreateRole" runat="server" OnClick="BtnCreateRole_Click" Text="Create Role" />
+        </p>
+        <asp:Button ID="BtnBindRole" runat="server" OnClick="BtnBindRole_Click" Text="Bind user and roles" />
     </form>
 </body>
 </html>

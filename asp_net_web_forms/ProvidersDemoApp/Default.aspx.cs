@@ -42,5 +42,25 @@ namespace ProvidersDemoApp
             }
             BindRoles();
         }
+
+        protected void BtnCreateUser_Click(object sender, EventArgs e)
+        {
+            // Membership Methos has all the function to find out about whatever property of user.
+            MembershipCreateStatus status;
+            MembershipUser user = Membership.CreateUser("user_04", "user_04", "user_04@test.com",
+                      null, null, true, out status);
+            Response.Write("Created sucessfully " + status.HasFlag(MembershipCreateStatus.Success).ToString());
+            Response.Write(status.ToString());
+        }
+
+        protected void BtnCreateRole_Click(object sender, EventArgs e)
+        {
+            Roles.CreateRole(TxtRole.Text);
+        }
+
+        protected void BtnBindRole_Click(object sender, EventArgs e)
+        {
+            Roles.AddUserToRole("user_04", "r4");
+        }
     }
 }

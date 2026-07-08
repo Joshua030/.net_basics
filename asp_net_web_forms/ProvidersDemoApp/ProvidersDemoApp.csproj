@@ -73,8 +73,10 @@
     <Content Include="RecoverPassword.aspx" />
     <Content Include="Register.aspx" />
     <Content Include="Secured\ChangePassword.aspx" />
+    <Content Include="Secured\EditMyProfile.aspx" />
     <Content Include="Secured\Page1.aspx" />
     <Content Include="Secured\Page2.aspx" />
+    <Content Include="Secured\ViewMyProfile.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +119,13 @@
     <Compile Include="Secured\ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Secured\EditMyProfile.aspx.cs">
+      <DependentUpon>EditMyProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secured\EditMyProfile.aspx.designer.cs">
+      <DependentUpon>EditMyProfile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Secured\Page1.aspx.cs">
       <DependentUpon>Page1.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -130,6 +139,13 @@
     </Compile>
     <Compile Include="Secured\Page2.aspx.designer.cs">
       <DependentUpon>Page2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secured\ViewMyProfile.aspx.cs">
+      <DependentUpon>ViewMyProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secured\ViewMyProfile.aspx.designer.cs">
+      <DependentUpon>ViewMyProfile.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
