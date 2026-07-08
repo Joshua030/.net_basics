@@ -38,5 +38,14 @@ namespace DiaryApp.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "DiaryEntries");
         }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0) return NotFound();
+            DiaryEntry? diaryEntry = _context.DiaryEntries.Find(id);
+            if (diaryEntry == null) return NotFound();
+            return View(diaryEntry);
+        }
     }
 }
