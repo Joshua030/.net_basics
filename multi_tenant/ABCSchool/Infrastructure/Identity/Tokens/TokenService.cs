@@ -69,7 +69,7 @@ namespace Infrastructure.Identity.Tokens
 
         public async Task<TokenResponse> RefreshTokenAsync(RefreshTokenRequest request)
         {
-            var userPrincipal = GetClaimsPrincipalFromExpiringToken(request.CurentJwt);
+            var userPrincipal = GetClaimsPrincipalFromExpiringToken(request.CurrentJwt);
             var userEmail = userPrincipal.GetEmail();
 
             var userInDb = await _userManager.FindByEmailAsync(userEmail)

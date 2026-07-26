@@ -3,6 +3,6 @@
     public class UpdateTenantSubscriptionRequest
     {
         public string TenantId { get; set; }
-        public DateTime NewExpityDate { get; set; }
+        public DateTime NewExpiryDate { get; set; }
     }
 }

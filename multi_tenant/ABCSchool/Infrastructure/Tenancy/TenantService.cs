@@ -102,7 +102,7 @@ namespace Infrastructure.Tenancy
         public async Task<string> UpdateSubscriptionAsync(UpdateTenantSubscriptionRequest updateTenantSubscription)
         {
             var tenantInDb = await _tenantStore.GetAsync(updateTenantSubscription.TenantId);
-            tenantInDb.ValidUpTo = updateTenantSubscription.NewExpityDate;
+            tenantInDb.ValidUpTo = updateTenantSubscription.NewExpiryDate;
 
             await _tenantStore.UpdateAsync(tenantInDb);
             return tenantInDb.Identifier;

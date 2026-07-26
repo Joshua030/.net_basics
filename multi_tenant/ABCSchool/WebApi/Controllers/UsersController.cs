@@ -47,12 +47,12 @@ namespace WebApi.Controllers
             return NotFound(response);
         }
 
-        [HttpPut("update-roles/{roleId}")]
+        [HttpPut("update-roles/{userId}")]
         [ShouldHavePermission(SchoolAction.Update, SchoolFeature.UserRoles)]
 
-        public async Task<IActionResult> UpdateUserRolesAsync([FromBody] UserRolesRequest userRolesRequest, string roleId)
+        public async Task<IActionResult> UpdateUserRolesAsync([FromBody] UserRolesRequest userRolesRequest, string userId)
         {
-            var response = await Sender.Send(new UpdateUserRolesCommand { UserRolesRequest = userRolesRequest, RoleId = roleId });
+            var response = await Sender.Send(new UpdateUserRolesCommand { UserRolesRequest = userRolesRequest, UserId = userId });
             if (response.IsSuccessful) return Ok(response);
             return NotFound(response);
         }
