@@ -39,5 +39,11 @@ namespace Infrastructure.Contexts
                 optionsBuilder.UseSqlServer(TenantInfo.ConnectionString, options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName));
             }
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(GetType().Assembly);
+        }
     }
 }

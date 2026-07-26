@@ -1,4 +1,5 @@
-﻿using Finbuckle.MultiTenant.EntityFrameworkCore.Extensions;
+﻿using Domain.Entities;
+using Finbuckle.MultiTenant.EntityFrameworkCore.Extensions;
 using Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -79,13 +80,18 @@ namespace Infrastructure.Contexts
             }
         }
 
-        internal class IdentityUserPasskeyConfiguration : IEntityTypeConfiguration<IdentityUserPasskey<string>>
+        internal class SchoolConfiguration : IEntityTypeConfiguration<School>
         {
-            public void Configure(EntityTypeBuilder<IdentityUserPasskey<string>> builder)
+            public void Configure(EntityTypeBuilder<School> builder)
             {
                 builder.
-                  ToTable("UserPasskeys", "Identity")
+                  ToTable("Schools", "Academics")
                   .IsMultiTenant();
+
+                builder.
+                    Property(s => s.Name)
+                    .IsRequired()
+                    .HasMaxLength(60);
             }
         }
 
