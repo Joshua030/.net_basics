@@ -33,7 +33,7 @@ namespace Infrastructure.Schools
             return await _context.Schools.ToListAsync();
         }
 
-        public async Task<School> GetByIdlAsync(int schoolId)
+        public async Task<School> GetByIdAsync(int schoolId)
         {
             var schoolInDb = await _context.Schools
                 .Where(school => school.Id == schoolId)

@@ -21,7 +21,7 @@ namespace Application.Features.Schools.Commands
 
         public async Task<IResponseWrapper> Handle(UpdateSchoolCommand request, CancellationToken cancellationToken)
         {
-            var schoolInDb = await _schoolService.GetByIdlAsync(request.UpdateSchool.Id);
+            var schoolInDb = await _schoolService.GetByIdAsync(request.UpdateSchool.Id);
             if (schoolInDb != null)
             {
                 schoolInDb.Name = request.UpdateSchool.Name;

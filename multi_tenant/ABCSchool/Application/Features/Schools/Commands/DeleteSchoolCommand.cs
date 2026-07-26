@@ -19,7 +19,7 @@ namespace Application.Features.Schools.Commands
 
         public async Task<IResponseWrapper> Handle(DeleteSchoolCommand request, CancellationToken cancellationToken)
         {
-            var schoolInDb = await _schoolService.GetByIdlAsync(request.SchoolId);
+            var schoolInDb = await _schoolService.GetByIdAsync(request.SchoolId);
 
             if (schoolInDb != null)
             {

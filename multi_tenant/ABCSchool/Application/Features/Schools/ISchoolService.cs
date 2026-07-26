@@ -10,7 +10,7 @@ namespace Application.Features.Schools
         Task<int> CreateAsync(School school);
         Task<int> UpdateAsync(School school);
         Task<int> DeleteAsync(School school);
-        Task<School> GetByIdlAsync(int schoolId);
+        Task<School> GetByIdAsync(int schoolId);
         Task<List<School>> GetAllAsync();
 
         Task<School> GetByNameAsync(string name);

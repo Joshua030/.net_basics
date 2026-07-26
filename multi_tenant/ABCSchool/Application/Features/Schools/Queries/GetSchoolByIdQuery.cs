@@ -20,7 +20,7 @@ namespace Application.Features.Schools.Queries
 
         public async Task<IResponseWrapper> Handle(GetSchoolByIdQuery request, CancellationToken cancellationToken)
         {
-            var schoolInDb = await _schoolService.GetByIdlAsync(request.SchoolId);
+            var schoolInDb = await _schoolService.GetByIdAsync(request.SchoolId);
             if (schoolInDb != null)
             {
                 return await ResponseWrapper<SchoolResponse>.SuccessAsync(data: schoolInDb.Adapt<SchoolResponse>());

@@ -9,7 +9,7 @@ namespace Application.Features.Schools.Validations
         {
             RuleFor(request => request.Id)
                 .NotEmpty()
-                .MustAsync(async (id, ct) => await schoolService.GetByIdlAsync(id) is School schoolInDb && schoolInDb.Id == id)
+                .MustAsync(async (id, ct) => await schoolService.GetByIdAsync(id) is School schoolInDb && schoolInDb.Id == id)
                 .WithMessage("School does not exist");
 
             RuleFor(request => request.Name)
