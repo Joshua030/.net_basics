@@ -93,7 +93,7 @@ namespace Infrastructure.Identity.Tokens
                 ValidateAudience = false,
                 ClockSkew = TimeSpan.Zero,
                 RoleClaimType = ClaimTypes.Role,
-                ValidateLifetime = true,
+                ValidateLifetime = false,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)) // Replace with your actual secret key
             };
 
@@ -101,7 +101,7 @@ namespace Infrastructure.Identity.Tokens
             var principal = tokenHandler.ValidateToken(expiringToken, tkValidationParams, out var securityToken);
 
             if (securityToken is not JwtSecurityToken jwtSecurityToken
-                || jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+                || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new UnauthorizedException(["Invalid token provider. Failed to generate new token."]);
             }

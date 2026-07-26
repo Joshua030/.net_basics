@@ -94,7 +94,7 @@ namespace Infrastructure.Identity
 
             var result = await _userManager.ChangePasswordAsync(userInDb, request.CurrentPassword, request.NewPassword);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
                 throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
             }
