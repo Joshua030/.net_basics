@@ -1,8 +1,9 @@
 ﻿using Application.Pipelines;
-using Application.Wrappers;
+using ABCSharedLibrary.Wrappers;
 using Domain.Entities;
 using Mapster;
 using MediatR;
+using ABCSharedLibrary.Models.Requests.Schools;
 
 namespace Application.Features.Schools.Commands
 {

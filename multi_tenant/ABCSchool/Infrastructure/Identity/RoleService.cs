@@ -8,6 +8,9 @@ using Infrastructure.Tenancy;
 using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ABCSharedLibrary.Constants;
+using ABCSharedLibrary.Models.Requests.Identity;
+using ABCSharedLibrary.Models.Responses.Identity;
 
 
 namespace Infrastructure.Identity
@@ -134,7 +137,7 @@ namespace Infrastructure.Identity
             return roleInDb.Name;
         }
 
-        public async Task<string> UpdatePermissionsAsync(UpdateRolePermissionRequest request)
+        public async Task<string> UpdatePermissionsAsync(UpdateRolePermissionsRequest request)
         {
             var roleInDb = await _roleManager.FindByIdAsync(request.RoleId)
                 ?? throw new NotFoundException(["Role does not exist"]);

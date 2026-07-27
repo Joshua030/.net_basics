@@ -1,4 +1,7 @@
-﻿namespace Application.Features.Identity.Roles
+﻿using ABCSharedLibrary.Models.Requests.Identity;
+using ABCSharedLibrary.Models.Responses.Identity;
+
+namespace Application.Features.Identity.Roles
 {
     public interface IRoleService
     {
@@ -6,7 +9,7 @@
         Task<string> UpdateAsync(UpdateRoleRequest request);
         Task<string> DeleteAsync(string id);
 
-        Task<string> UpdatePermissionsAsync(UpdateRolePermissionRequest request);
+        Task<string> UpdatePermissionsAsync(UpdateRolePermissionsRequest request);
 
         Task<bool> DoesItExistsAsync(string name);
         Task<List<RoleResponse>> GetAllAsync(CancellationToken ct);

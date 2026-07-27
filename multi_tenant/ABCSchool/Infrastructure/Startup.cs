@@ -4,7 +4,7 @@ using Application.Features.Identity.Tokens;
 using Application.Features.Identity.Users;
 using Application.Features.Schools;
 using Application.Features.Tenancy;
-using Application.Wrappers;
+using ABCSharedLibrary.Wrappers;
 using Finbuckle.MultiTenant.AspNetCore.Extensions;
 using Finbuckle.MultiTenant.EntityFrameworkCore.Extensions;
 using Finbuckle.MultiTenant.Extensions;
@@ -35,6 +35,7 @@ using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using ABCSharedLibrary.Constants;
 
 namespace Infrastructure
 {

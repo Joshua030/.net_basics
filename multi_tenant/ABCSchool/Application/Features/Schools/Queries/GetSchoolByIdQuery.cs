@@ -1,6 +1,7 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Wrappers;
 using Mapster;
 using MediatR;
+using ABCSharedLibrary.Models.Responses.Schools;
 
 namespace Application.Features.Schools.Queries
 {

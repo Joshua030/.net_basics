@@ -1,4 +1,7 @@
-﻿namespace Application.Features.Identity.Tokens
+﻿using ABCSharedLibrary.Models.Requests.Token;
+using ABCSharedLibrary.Models.Responses.Token;
+
+namespace Application.Features.Identity.Tokens
 {
     public interface ITokenService
     {

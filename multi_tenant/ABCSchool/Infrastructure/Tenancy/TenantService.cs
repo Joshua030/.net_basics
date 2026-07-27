@@ -3,6 +3,8 @@ using Finbuckle.MultiTenant.Abstractions;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
+using ABCSharedLibrary.Models.Requests.Tenancy;
+using ABCSharedLibrary.Models.Responses.Tenancy;
 
 namespace Infrastructure.Tenancy
 {

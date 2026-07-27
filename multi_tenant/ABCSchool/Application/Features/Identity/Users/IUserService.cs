@@ -1,4 +1,7 @@
-﻿namespace Application.Features.Identity.Users
+﻿using ABCSharedLibrary.Models.Requests.Identity;
+using ABCSharedLibrary.Models.Responses.Identity;
+
+namespace Application.Features.Identity.Users
 {
     public interface IUserService
     {

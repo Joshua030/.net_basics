@@ -1,9 +1,10 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Wrappers;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using ABCSharedLibrary.Models.Requests.Tenancy;
 
 namespace Application.Features.Tenancy.Commands
 {

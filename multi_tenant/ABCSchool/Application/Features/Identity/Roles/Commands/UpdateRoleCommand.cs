@@ -1,5 +1,6 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Wrappers;
 using MediatR;
+using ABCSharedLibrary.Models.Requests.Identity;
 
 namespace Application.Features.Identity.Roles.Commands
 {

@@ -1,5 +1,6 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Wrappers;
 using MediatR;
+using ABCSharedLibrary.Models.Responses.Tenancy;
 
 namespace Application.Features.Tenancy.Queries
 {

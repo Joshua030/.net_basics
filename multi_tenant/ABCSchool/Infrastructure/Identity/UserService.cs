@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using System.Net.WebSockets;
+using ABCSharedLibrary.Constants;
+using ABCSharedLibrary.Models.Requests.Identity;
+using ABCSharedLibrary.Models.Responses.Identity;
 
 namespace Infrastructure.Identity
 {

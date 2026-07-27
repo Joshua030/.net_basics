@@ -4,6 +4,8 @@ using Application.Features.Identity.Roles.Queries;
 using Infrastructure.Constants;
 using Infrastructure.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
+using ABCSharedLibrary.Constants;
+using ABCSharedLibrary.Models.Requests.Identity;
 
 namespace WebApi.Controllers
 {
@@ -36,7 +38,7 @@ namespace WebApi.Controllers
 
         [HttpPut("update-permissions")]
         [ShouldHavePermission(SchoolAction.Update, SchoolFeature.RoleClaims)]
-        public async Task<IActionResult> UpdateRoleClaimsAsync([FromBody] UpdateRolePermissionRequest updateRoleClaims)
+        public async Task<IActionResult> UpdateRoleClaimsAsync([FromBody] UpdateRolePermissionsRequest updateRoleClaims)
         {
             var response = await Sender.Send(new UpdateRolePermissionsCommand { UpdateRolePermissions = updateRoleClaims });
             if (response.IsSuccessful)
