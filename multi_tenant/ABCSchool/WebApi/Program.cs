@@ -12,6 +12,17 @@ namespace WebApi
 
             // Add services to the container.
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("ABC School App", policy =>
+                {
+                    policy.WithOrigins("https://localhost:7073")
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             //builder.Services.AddOpenApi();
@@ -47,6 +58,8 @@ namespace WebApi
             ********/
 
             app.UseHttpsRedirection();
+
+            app.UseCors("ABC School App");
 
             // It is call on the infrasctructure layer on Startup.cs - UseInfrastructure middleware
             //app.UseAuthorization();

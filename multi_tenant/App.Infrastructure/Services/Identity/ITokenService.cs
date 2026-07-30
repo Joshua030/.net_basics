@@ -1,0 +1,10 @@
+﻿using ABCSharedLibrary.Models.Requests.Token;
+using ABCSharedLibrary.Wrappers;
+
+namespace App.Infrastructure.Services.Identity
+{
+    public interface ITokenService
+    {
+        Task<IResponseWrapper> LoginAsync(string tenant, TokenRequest request);
+    }
+}

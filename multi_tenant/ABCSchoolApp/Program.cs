@@ -1,4 +1,5 @@
 using App.Infrastructure;
+using App.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -18,7 +19,7 @@ namespace ABCSchoolApp
             builder.Services.AddSingleton(apiSettings);
 
             //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-
+            builder.AddClientServices();
             await builder.Build().RunAsync();
         }
     }
