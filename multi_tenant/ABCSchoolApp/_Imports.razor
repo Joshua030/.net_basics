@@ -14,6 +14,7 @@
 @using MudBlazor
 @using global::App.Infrastructure.Services.Auth
 @using global::App.Infrastructure.Services.Identity
+@using ABCSchoolApp.Components
 
 @attribute [Authorize]
 
@@ -21,3 +22,4 @@
 @inject NavigationManager _navigation
 @inject ITokenService _tokenService
 @inject ISnackbar _snackbar
+@inject IDialogService _dialogService;

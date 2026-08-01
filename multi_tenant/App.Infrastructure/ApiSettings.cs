@@ -4,6 +4,7 @@
     {
         public string BaseApiUrl { get; set; }
         public TokenEndpoints TokenEndpoints { get; set; }
+        public UserEndpoints UserEnpoints { get; set; }
     }
 
     public class TokenEndpoints
@@ -11,5 +12,11 @@
         public string Login { get; set; }
         public string Refreshtoken { get; set; }
     }
+    public class UserEndpoints
+    {
+        public string Update { get; set; }
+    }
+
+
 }
 

@@ -62,12 +62,24 @@ namespace App.Infrastructure.Services.Implementation.Identity
 
         }
 
+        public async Task<IResponseWrapper> LogoutAsync()
+        {
+            // Clear local storage
+            await _localStorageService.RemoveItemAsync(StorageConstants.AuthToken);
+            await _localStorageService.RemoveItemAsync(StorageConstants.RefreshToken);
+            // notify that the user is logged out
+            ((ApplicationStateProvider)_authenticationStateProvider).MarkUserAsLoggedOut();
+            _httpClient.DefaultRequestHeaders.Authorization = null;
+            return await ResponseWrapper.SuccessAsync(message: "Successfully logged out");
+        }
+
         #region Helpers
         private static void AddTenantHeader(HttpRequestMessage request, string headerName, string value)
         {
             if (string.IsNullOrEmpty(value) || request.Headers.Contains(headerName)) return;
             request.Headers.TryAddWithoutValidation(headerName, value);
         }
+
         #endregion
     }
 }

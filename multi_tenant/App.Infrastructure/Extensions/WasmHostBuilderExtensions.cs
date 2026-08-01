@@ -34,6 +34,7 @@ namespace App.Infrastructure.Extensions
                  .AddScoped<AuthenticationStateProvider, ApplicationStateProvider>()
                  .AddTransient<AuthenticationHeaderHandler>()
                  .AddScoped<ITokenService, TokenService>()
+                 .AddScoped<IUserService, UserService>()
                  .AddScoped(sp => sp
                  .GetRequiredService<IHttpClientFactory>()
                  .CreateClient(_clientName).EnableIntercept(sp))

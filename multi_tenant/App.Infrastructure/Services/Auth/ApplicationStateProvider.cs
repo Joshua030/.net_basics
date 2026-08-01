@@ -41,7 +41,7 @@ namespace App.Infrastructure.Services.Auth
             var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
             NotifyAuthenticationStateChanged(authState);
         }
-        public void MarkUserAsLoggedOut(string username)
+        public void MarkUserAsLoggedOut()
         {
             var anonymousUser = new ClaimsPrincipal(new ClaimsIdentity());
 
