@@ -4,7 +4,7 @@
     {
         public string BaseApiUrl { get; set; }
         public TokenEndpoints TokenEndpoints { get; set; }
-        public UserEndpoints UserEnpoints { get; set; }
+        public UserEndpoints UserEndpoints { get; set; }
     }
 
     public class TokenEndpoints

@@ -6,13 +6,17 @@ using System.Net.Http.Json;
 
 namespace App.Infrastructure.Services.Implementation.Identity
 {
-    internal class UserService : IUserService
+    internal class UserService(
+        HttpClient httpClient,
+        ApiSettings apiSettings
+        ) : IUserService
     {
-        private readonly HttpClient _httpClient;
-        private readonly ApiSettings _settings;
+        private readonly HttpClient _httpClient = httpClient;
+        private readonly ApiSettings _settings = apiSettings;
+
         public async Task<IResponseWrapper<string>> UpdateUserAsync(UpdateUserRequest request)
         {
-            var response = await _httpClient.PutAsJsonAsync(_settings.UserEnpoints.Update, request);
+            var response = await _httpClient.PutAsJsonAsync(_settings.UserEndpoints.Update, request);
             return await response.WrapToResponse<string>();
         }
     }
