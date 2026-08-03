@@ -19,5 +19,12 @@ namespace App.Infrastructure.Services.Implementation.Identity
             var response = await _httpClient.PutAsJsonAsync(_settings.UserEndpoints.Update, request);
             return await response.WrapToResponse<string>();
         }
+
+        public async Task<IResponseWrapper> ChangeUserPasswordAsync(ChangePasswordRequest request)
+        {
+            var response = await _httpClient.PutAsJsonAsync(_settings.UserEndpoints.ResetPassword, request);
+            return await response.WrapToResponse<string>();
+        }
+
     }
 }

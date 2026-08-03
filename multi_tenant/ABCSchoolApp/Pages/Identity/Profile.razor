@@ -23,18 +23,18 @@
                 <MudCardContent>
                     <MudGrid>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="@UpdateUserRequest?.FirstName" Variant="Variant.Outlined" Label="First Name" />
+                            <MudTextField @bind-Value="UpdateUserRequest.FirstName" Variant="Variant.Outlined" Label="First Name" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="@UpdateUserRequest?.LastName" Variant="Variant.Outlined" Label="Last Name" />
+                            <MudTextField @bind-Value="UpdateUserRequest.LastName" Variant="Variant.Outlined" Label="Last Name" />
                         </MudItem>
                         <MudItem xs="12" md="6">
-                            <MudTextField @bind-Value="@UpdateUserRequest?.PhoneNumber" Variant="Variant.Outlined" Label="Phone Number" />
+                            <MudTextField @bind-Value="UpdateUserRequest.PhoneNumber" Variant="Variant.Outlined" Label="Phone Number" />
                         </MudItem>
                     </MudGrid>
                 </MudCardContent>
                 <MudCardActions Class="pb-4 pl-4">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="ml-auto">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small" Class="ml-auto" OnClick="UpdateUserDetailAsync">
                         Save Changes
                     </MudButton>
                 </MudCardActions>

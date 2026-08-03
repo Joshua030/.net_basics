@@ -2,6 +2,8 @@
 using App.Infrastructure.Services.Auth;
 using App.Infrastructure.Services.Identity;
 using App.Infrastructure.Services.Implementation.Identity;
+using App.Infrastructure.Services.Implementation.Tenancy;
+using App.Infrastructure.Services.Tenancy;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -35,6 +37,7 @@ namespace App.Infrastructure.Extensions
                  .AddTransient<AuthenticationHeaderHandler>()
                  .AddScoped<ITokenService, TokenService>()
                  .AddScoped<IUserService, UserService>()
+                 .AddScoped<ITenantService, TenantService>()
                  .AddScoped(sp => sp
                  .GetRequiredService<IHttpClientFactory>()
                  .CreateClient(_clientName).EnableIntercept(sp))

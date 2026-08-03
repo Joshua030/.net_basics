@@ -104,10 +104,13 @@ namespace App.Infrastructure.Services.Auth
 
         private byte[] ParseBase64WithoutPadding(string base64Payload)
         {
+            // JWT segments are base64url encoded: restore the standard alphabet first.
+            base64Payload = base64Payload.Replace('-', '+').Replace('_', '/');
+
             switch (base64Payload.Length % 4)
             {
                 case 2: base64Payload += "=="; break;
-                case 3: base64Payload += "=="; break;
+                case 3: base64Payload += "="; break;
             }
 
             return Convert.FromBase64String(base64Payload);

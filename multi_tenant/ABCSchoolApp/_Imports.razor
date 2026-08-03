@@ -1,6 +1,7 @@
 ﻿@using System.Net.Http
 @using System.Net.Http.Json
 @using ABCSchoolApp
+@using ABCSchoolApp.Components
 @using ABCSchoolApp.Layout
 @using ABCSchoolApp.Pages.Auth
 @using Microsoft.AspNetCore.Authorization
@@ -14,12 +15,14 @@
 @using MudBlazor
 @using global::App.Infrastructure.Services.Auth
 @using global::App.Infrastructure.Services.Identity
-@using ABCSchoolApp.Components
+@using global::App.Infrastructure.Services.Tenancy
 
 @attribute [Authorize]
 
 @inject ApplicationStateProvider _applicationStateProvider
 @inject NavigationManager _navigation
 @inject ITokenService _tokenService
+@inject IUserService _userService
+@inject ITenantService _tenantService
 @inject ISnackbar _snackbar
 @inject IDialogService _dialogService;
