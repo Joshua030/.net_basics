@@ -22,7 +22,7 @@
         <MudTd>@context.FirstName</MudTd>
         <MudTd>@context.LastName</MudTd>
         <MudTd>@context.Email</MudTd>
-        <MudTd>@context.ValidUpTo.ToString("dd MMM yyyy HH:mm:ss tt")</MudTd>
+        <MudTd>@context.ValidUpTo.ToString("dd MMM yyyy")</MudTd>
         <MudTd>
             <MudCheckBox @bind-Value="context.IsActive" Disabled ReadOnly Color="Color.Secondary" />
         </MudTd>
@@ -32,9 +32,19 @@
                      Color="Color.Secondary"
                      TransformOrigin="Origin.BottomLeft"
                      AnchorOrigin="Origin.BottomLeft">
-                <MudMenuItem>Upgrade</MudMenuItem>
-                <MudMenuItem>Activate</MudMenuItem>
+                <MudMenuItem OnClick="@(() => UpgradeSubscriptionAsync(context))">Upgrade</MudMenuItem>
+                @if (!context.IsActive)
+                {
+                    <MudMenuItem OnClick="@(() => ActivateOrDeactivateAsync(context))">Activate</MudMenuItem>
+                }
+                else
+                {
+                    <MudMenuItem OnClick="@(() => ActivateOrDeactivateAsync(context))">Deactivate</MudMenuItem>
+                }
             </MudMenu>
         </MudTd>
     </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="RowsPerPageString" InfoFormat="InfoFormat" />
+    </PagerContent>
 </MudTable>

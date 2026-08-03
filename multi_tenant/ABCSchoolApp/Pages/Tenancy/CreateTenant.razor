@@ -11,45 +11,53 @@
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.Identifier"
                                   Variant="Variant.Outlined"
-                                  Label="Tenant key" />
+                                  Label="Tenant key"
+                                  Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.Name"
                                   Variant="Variant.Outlined"
-                                  Label="Tenant Name" />
+                                  Label="Tenant Name"
+                                  Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.FirstName"
                                   Variant="Variant.Outlined"
-                                  Label="Admin First Name" />
+                                  Label="Admin First Name"
+                                  Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.LastName"
                                   Variant="Variant.Outlined"
-                                  Label="Admin Last Name" />
+                                  Label="Admin Last Name"
+                                  Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.Email"
                                   Variant="Variant.Outlined"
-                                  Label="Admin Email" />
+                                  Label="Admin Email"
+                                  Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudDatePicker @bind-Date="ValidUpToPicker"
                                    Context="PickerContext"
                                    Variant="Variant.Outlined"
                                    @ref="_datePicker"
-                                   Label="Subscription Valid Up To" />
+                                   Label="Subscription Valid Up To"
+                                   Margin="Margin.Dense" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudCheckBox @bind-Value="CreateTenantRequest.IsActive"
                                  Variant="Variant.Outlined"
                                  Label="Activate Tenant?"
-                                 Color="Color.Primary" />
+                                 Color="Color.Primary"
+                                 Size="Size.Medium" />
                 </MudItem>
                 <MudItem xs="12" md="6">
                     <MudTextField @bind-Value="CreateTenantRequest.ConnectionString"
                                   Variant="Variant.Outlined"
                                   Label="Connection String"
+                                  Margin="Margin.Dense"
                                   Lines="2"
                                   HelperText="To use shared database, leave this field blank." />
                 </MudItem>

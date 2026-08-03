@@ -23,9 +23,10 @@
         public string Create { get; set; }
         public string Upgrade { get; set; }
         public string GetAll { get; set; }
-        private string ById { get; set; }
-        private string Activate { get; set; }
-        private string Deactivate { get; set; }
+        // Must be public: configuration binding only sets public properties.
+        public string ById { get; set; }
+        public string Activate { get; set; }
+        public string Deactivate { get; set; }
 
         public string GetById(string tenatId)
         {
