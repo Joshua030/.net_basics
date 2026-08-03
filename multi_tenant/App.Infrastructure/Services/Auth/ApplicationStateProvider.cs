@@ -30,16 +30,9 @@ namespace App.Infrastructure.Services.Auth
             return state;
         }
 
-        public void MarkUserAuthenticated(string username)
+        public void MarkUserAuthenticated()
         {
-            var authenticatedUser = new ClaimsPrincipal(
-                new ClaimsIdentity(
-                [
-                    new Claim(ClaimTypes.Email, username)
-                ], "apiauth"));
-
-            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-            NotifyAuthenticationStateChanged(authState);
+            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
         }
         public void MarkUserAsLoggedOut()
         {

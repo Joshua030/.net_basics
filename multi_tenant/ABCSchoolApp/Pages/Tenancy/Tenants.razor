@@ -1,4 +1,6 @@
 ﻿@page "/tenants"
+@using ABCSharedLibrary.Constants
+@attribute [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Tenants)]
 <Header OnReturn="ReturClicked" Title="Tenants" Description="Manage Tenants" />
 <MudTable Items="TenantList" Loading="_isLoading" LoadingProgressColor="Color.Info" Elevation="25">
     <ToolBarContent>

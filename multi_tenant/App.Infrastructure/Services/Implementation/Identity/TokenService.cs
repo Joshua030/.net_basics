@@ -50,7 +50,7 @@ namespace App.Infrastructure.Services.Implementation.Identity
                 await _localStorageService.SetItemAsync(StorageConstants.RefreshToken, refreshToken);
 
                 //update auth state
-                ((ApplicationStateProvider)_authenticationStateProvider).MarkUserAuthenticated(request.Username);
+                ((ApplicationStateProvider)_authenticationStateProvider).MarkUserAuthenticated();
 
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 return await ResponseWrapper.SuccessAsync();
