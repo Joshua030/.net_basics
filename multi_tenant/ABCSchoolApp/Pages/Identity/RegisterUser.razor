@@ -1,0 +1,72 @@
+﻿<MudForm @ref="_form" Model="CreateUserRequest">
+    <MudDialog>
+        <TitleContent>
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" Class="mr-1 mb-n1" />
+                Register New User
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.FirstName"
+                                  Variant="Variant.Outlined"
+                                  Label="First Name"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.LastName"
+                                  Variant="Variant.Outlined"
+                                  Label="Last Name"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.Email"
+                                  Variant="Variant.Outlined"
+                                  Label="Email"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.PhoneNumber"
+                                  Variant="Variant.Outlined"
+                                  Label="Phone Number"
+                                  Margin="Margin.Dense" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.Password"
+                                  Variant="Variant.Outlined"
+                                  Label="Password"
+                                  Margin="Margin.Dense"
+                                  InputType="@_inputType"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordInputIcon"
+                                  OnAdornmentClick="TogglePasswordVisibility" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateUserRequest.ConfirmPassword"
+                                  Variant="Variant.Outlined"
+                                  Label="Confirm Password"
+                                  Margin="Margin.Dense"
+                                  InputType="@_inputConfirmType"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@_confirmPasswordInputIcon"
+                                  OnAdornmentClick="ToggleConfirmPasswordVisibility" />
+                </MudItem>
+
+                
+                <MudItem xs="12" md="6">
+                    <MudCheckBox @bind-Value="CreateUserRequest.IsActive"
+                                 Variant="Variant.Outlined"
+                                 Label="Activate User?"
+                                 Color="Color.Primary"
+                                 Size="Size.Medium" />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="CancelDialog" Variant="Variant.Outlined" Class="mr-auto">Cancel</MudButton>
+            <MudButton OnClick="SubmitUserRegistrationAsync" Variant="Variant.Outlined" Color="Color.Primary">Register</MudButton>
+        </DialogActions>
+    </MudDialog>
+</MudForm>
+

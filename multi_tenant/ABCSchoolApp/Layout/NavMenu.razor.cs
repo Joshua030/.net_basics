@@ -15,12 +15,14 @@ namespace ABCSchoolApp.Layout
         protected IAuthorizationService AuthService { get; set; } = default!;
 
         private bool _canViewTenants;
+        private bool _canViewUsers;
 
         protected override async Task OnParametersSetAsync()
         {
             var authState = await AuthState;
             var user = authState.User;
             _canViewTenants = await AuthService.HasPermissionAsync(user, SchoolFeature.Tenants, SchoolAction.Read);
+            _canViewUsers = await AuthService.HasPermissionAsync(user, SchoolFeature.Users, SchoolAction.Read);
         }
     }
 }

@@ -136,6 +136,9 @@ namespace Infrastructure.Identity
                 throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
             }
 
+            // New users start out with the Basic role.
+            await _userManager.AddToRoleAsync(newUser, RoleConstants.Basic);
+
             return newUser.Id;
         }
 

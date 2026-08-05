@@ -17,6 +17,17 @@
     {
         public string Update { get; set; }
         public string ResetPassword { get; set; }
+        public string All { get; set; }
+        public string ById { get; set; }
+        public string RolesByID { get; set; }
+        public string Register { get; set; }
+
+        public string UpdateRoles { get; set; }
+        public string UpdateStatus { get; set; }
+
+        public string GetById(string userId) => $"{ById}/{userId}";
+        public string GetRolesById(string userId) => $"{RolesByID}/{userId}";
+        public string UpdateRolesById(string userId) => $"{UpdateRoles}/{userId}";
     }
     public class TenantEndpoints
     {
